@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Título de la página -->
+<h2>✏️ Actualizar libro</h2>
+
+<!-- Formulario para actualizar los datos de un libro existente -->
+<form method="post">
+
+  <!-- Campo oculto que mantiene el ID del libro que se va a actualizar -->
+  <input type="hidden" name="id" value="{{ producto.id }}">
+
+  <!-- Campo de texto para el título del libro -->
+  <div class="mb-3">
+    <label>Título</label>
+    <input class="form-control" name="titulo" value="{{ producto.titulo }}">
+  </div>
+
+  <!-- Campo de texto para el autor del libro -->
+  <div class="mb-3">
+    <label>Autor</label>
+    <input class="form-control" name="autor" value="{{ producto.autor }}">
+  </div>
+
+  <!-- Campo de texto para la categoría del libro (ej: novela, poesía, ensayo) -->
+  <div class="mb-3">
+    <label>Categoría</label>
+    <input class="form-control" name="categoria" value="{{ producto.categoria }}">
+  </div>
+
+  <!-- Campo numérico para la cantidad disponible en inventario -->
+  <div class="mb-3">
+    <label>Cantidad</label>
+    <input class="form-control" name="cantidad" type="number" value="{{ producto.cantidad }}">
+  </div>
+
+  <!-- Campo numérico para el precio del libro con dos decimales -->
+  <div class="mb-3">
+    <label>Precio</label>
+    <input class="form-control" name="precio" type="number" step="0.01" value="{{ producto.precio }}">
+  </div>
+
+  <!-- Botón para enviar el formulario y actualizar el libro -->
+  <button class="btn btn-success" type="submit">Actualizar</button>
+
+</form>
+
+{% endblock %}
+
+
+

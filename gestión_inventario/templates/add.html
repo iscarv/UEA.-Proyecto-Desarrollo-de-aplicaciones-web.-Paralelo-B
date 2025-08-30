@@ -1,0 +1,52 @@
+{% extends "base.html" %}  
+
+{% block content %}  
+
+<!-- Título de la página -->
+<h2>➕ Añadir libro</h2>  
+
+<!-- Formulario que envía los datos al servidor con método POST -->
+<form method="post">  
+
+  <!-- Campo numérico obligatorio para el ID del libro -->
+  <div class="mb-3">  
+    <label>ID</label>  
+    <input class="form-control" name="id" type="number" required>  
+  </div>
+
+  <!-- Campo de texto obligatorio para el título del libro -->
+  <div class="mb-3">  
+    <label>Título</label>  
+    <input class="form-control" name="titulo" required>  
+  </div>
+
+  <!-- Campo de texto obligatorio para el autor del libro -->
+  <div class="mb-3">  
+    <label>Autor</label>  
+    <input class="form-control" name="autor" required>  
+  </div>
+
+  <!-- Campo de texto obligatorio para la categoría (ej: novela, poesía, ensayo) -->
+  <div class="mb-3">  
+    <label>Categoría</label>  
+    <input class="form-control" name="categoria" required>  
+  </div>
+
+  <!-- Campo numérico obligatorio para la cantidad disponible en inventario -->
+  <div class="mb-3">  
+    <label>Cantidad</label>  
+    <input class="form-control" name="cantidad" type="number" required>  
+  </div>
+
+  <!-- Campo numérico obligatorio para el precio (dos decimales, ej: 10.50) -->
+  <div class="mb-3">  
+    <label>Precio</label>  
+    <input class="form-control" name="precio" type="number" step="0.01" required>  
+  </div>
+
+  <!-- Botón para guardar el libro -->
+  <button class="btn btn-success" type="submit">Guardar</button>  
+
+</form>
+
+{% endblock %}

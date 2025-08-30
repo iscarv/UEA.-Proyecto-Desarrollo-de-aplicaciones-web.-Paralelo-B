@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Botón para añadir un nuevo libro al inventario -->
+<a class="btn btn-primary mb-3" href="{{ url_for('add') }}">➕ Añadir libro</a>
+
+<!-- Formulario de búsqueda por título -->
+<form class="d-flex mb-3" method="get" action="{{ url_for('search') }}">
+  <!-- Campo de texto para escribir el título del libro a buscar -->
+  <input class="form-control me-2" type="search" name="q" placeholder="Buscar por título" aria-label="Buscar">
+  <!-- Botón para enviar la búsqueda -->
+  <button class="btn btn-outline-success" type="submit">🔍 Buscar</button>
+</form>
+
+<!-- Tabla que muestra el inventario de libros -->
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Título</th>
+      <th>Autor</th>
+      <th>Categoría</th>
+      <th>Cantidad</th>
+      <th>Precio</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Verificamos si existen productos en la base de datos -->
+    {% if productos %}
+      <!-- Iteramos sobre cada producto y mostramos sus datos en una fila -->
+      {% for p in productos %}
+      <tr>
+        <td>{{ p.id }}</td>
+        <td>{{ p.titulo }}</td>
+        <td>{{ p.autor }}</td>
+        <td>{{ p.categoria }}</td>
+        <td>{{ p.cantidad }}</td>
+        <!-- El precio se muestra con dos decimales -->
+        <td>${{ "%.2f"|format(p.precio) }}</td>
+        <td>
+          <!-- Botón para editar el libro -->
+          <a href="{{ url_for('update', id_=p.id) }}" class="btn btn-sm btn-warning">✏️ Editar</a>
+          <!-- Botón para eliminar el libro -->
+          <a href="{{ url_for('delete', id_=p.id) }}" class="btn btn-sm btn-danger">🗑️ Eliminar</a>
+        </td>
+      </tr>
+      {% endfor %}
+    {% else %}
+      <!-- Mensaje mostrado si no hay libros en el inventario -->
+      <tr>
+        <td colspan="7" class="text-center">No se encontraron libros.</td>
+      </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+{% endblock %}
+
+
+

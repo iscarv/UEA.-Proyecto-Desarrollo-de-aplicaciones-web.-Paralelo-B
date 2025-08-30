@@ -1,0 +1,12 @@
+/* Fondo general rosado muy sutil */
+body {
+  background-color: #ffe6f0; /* rosado claro */
+}
+
+/* Cuadro principal del inventario */
+.container {
+  background: #fff; /* cuadro blanco */
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
+}
