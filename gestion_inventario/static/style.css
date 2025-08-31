@@ -1,6 +1,9 @@
 /* Fondo general rosado muy sutil */
 body {
   background-color: #ffe6f0; /* rosado claro */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 /* Cuadro principal del inventario */
@@ -9,4 +12,46 @@ body {
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
+}
+
+/* Estilo para los encabezados */
+h1, h2, h3 {
+  color: #cc3366; /* rosado fuerte */
+  font-weight: bold;
+}
+
+/* Botones personalizados */
+.btn-primary {
+  background-color: #cc3366;
+  border-color: #cc3366;
+}
+
+.btn-primary:hover {
+  background-color: #b32d59;
+  border-color: #b32d59;
+}
+
+.btn-outline-success {
+  color: #cc3366;
+  border-color: #cc3366;
+}
+
+.btn-outline-success:hover {
+  background-color: #cc3366;
+  color: #fff;
+}
+
+/* Navbar */
+.navbar {
+  border-radius: 0 0 12px 12px;
+}
+
+/* Tablas */
+.table th {
+  background-color: #ffccd9;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+  text-align: center;
 }

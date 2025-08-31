@@ -1,47 +1,53 @@
-<!doctype html>
-<html lang="es">  
-  <head>
-    <!-- Configuración de codificación -->
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Librería De la Rosa</title>
 
-    <!-- Título que aparece en la pestaña del navegador -->
-    <title>Librería De la Rosa</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Importación de Bootstrap (estilos prediseñados) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- CSS personalizado -->
+  <!-- Se cambia la ruta a style.css directamente en static -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-    <!-- Enlace al archivo CSS personalizado ubicado en /static/style.css -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  </head>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('home') }}">📖 Librería De la Rosa</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <body>
-    <!-- Contenedor principal con margen vertical -->
-    <div class="container my-5">
-
-      <!-- Encabezado principal de la aplicación -->
-      <h1 class="mb-4 text-center">📚 Librería De la Rosa</h1>
-
-      <!-- Sección para mostrar mensajes flash (ej: éxito, error, advertencia) -->
-      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          {% for category, message in messages %}
-            <!-- Cada mensaje se muestra con su categoría (success, danger, warning, etc.) -->
-            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-              {{ message }}
-              <!-- Botón para cerrar el mensaje -->
-              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
-
-      <!-- Aquí se insertará el contenido de cada página hija -->
-      {% block content %}{% endblock %}
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('home') }}">🏠 Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('about') }}">ℹ️ Acerca de</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('inventario_view') }}">📚 Inventario</a>
+          </li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-    <!-- Script de Bootstrap para funcionalidades como botones y alertas -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+  <!-- Contenido dinámico -->
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
+
 
 

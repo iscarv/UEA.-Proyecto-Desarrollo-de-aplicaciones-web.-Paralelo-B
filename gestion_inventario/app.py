@@ -17,12 +17,28 @@ inventario = Inventario(repo)                     # Carga los productos en memor
 
 
 # -----------------------------
-# Ruta principal: listar todos los libros
+# Ruta principal (Home)
 # -----------------------------
 @app.route("/")
-def index():
-    productos = inventario.listar_todos()  # Obtener todos los libros
-    return render_template("index.html", productos=productos)  # Renderizar plantilla
+def home():
+    return render_template("home.html")
+
+
+# -----------------------------
+# Ruta "Acerca de"
+# -----------------------------
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
+# -----------------------------
+# Ruta Inventario (lista de libros)
+# -----------------------------
+@app.route("/inventario")
+def inventario_view():
+    productos = inventario.listar_todos()
+    return render_template("index.html", productos=productos)
 
 
 # -----------------------------
@@ -30,11 +46,11 @@ def index():
 # -----------------------------
 @app.route("/search")
 def search():
-    query = request.args.get("q", "").strip()  # Obtener la cadena de búsqueda
+    query = request.args.get("q", "").strip()
     if query:
-        productos = inventario.buscar_por_nombre(query)  # Buscar libros por título
+        productos = inventario.buscar_por_nombre(query)
     else:
-        productos = inventario.listar_todos()  # Si no hay búsqueda, mostrar todos
+        productos = inventario.listar_todos()
     return render_template("index.html", productos=productos)
 
 
@@ -45,7 +61,6 @@ def search():
 def add():
     if request.method == "POST":
         try:
-            # Obtener datos del formulario
             id_ = int(request.form["id"])
             titulo = request.form["titulo"]
             autor = request.form["autor"]
@@ -53,17 +68,16 @@ def add():
             cantidad = int(request.form["cantidad"])
             precio = float(request.form["precio"])
 
-            # Crear instancia de Producto y agregar al inventario
             producto = Producto(id_, titulo, autor, categoria, cantidad, precio)
             inventario.agregar_producto(producto)
 
-            flash("Libro agregado correctamente ✅", "success")  # Mensaje de éxito
-            return redirect(url_for("index"))
+            flash("Libro agregado correctamente ✅", "success")
+            return redirect(url_for("inventario_view"))
 
         except Exception as e:
-            flash(str(e), "danger")  # Mostrar errores si algo falla
+            flash(str(e), "danger")
 
-    return render_template("add.html")  # Mostrar formulario si es GET
+    return render_template("add.html")
 
 
 # -----------------------------
@@ -71,35 +85,33 @@ def add():
 # -----------------------------
 @app.route("/update/<int:id_>", methods=["GET", "POST"])
 def update(id_):
-    producto = repo.obtener(id_)  # Obtener producto por ID
+    producto = repo.obtener(id_)
     if not producto:
         flash("Libro no encontrado ⚠️", "warning")
-        return redirect(url_for("index"))
+        return redirect(url_for("inventario_view"))
 
     if request.method == "POST":
         try:
-            # Actualizar datos con valores del formulario
             titulo = request.form["titulo"]
             autor = request.form["autor"]
             categoria = request.form["categoria"]
             cantidad = int(request.form["cantidad"])
             precio = float(request.form["precio"])
 
-            # Usar setters para validar y actualizar
             producto.set_titulo(titulo)
             producto.set_autor(autor)
             producto.set_categoria(categoria)
             producto.set_cantidad(cantidad)
             producto.set_precio(precio)
 
-            inventario.actualizar_producto(producto)  # Guardar cambios
+            inventario.actualizar_producto(producto)
             flash("Libro actualizado ✅", "success")
-            return redirect(url_for("index"))
+            return redirect(url_for("inventario_view"))
 
         except Exception as e:
-            flash(str(e), "danger")  # Mostrar errores
+            flash(str(e), "danger")
 
-    return render_template("update.html", producto=producto)  # Mostrar formulario con datos actuales
+    return render_template("update.html", producto=producto)
 
 
 # -----------------------------
@@ -108,16 +120,16 @@ def update(id_):
 @app.route("/delete/<int:id_>")
 def delete(id_):
     try:
-        inventario.eliminar_producto(id_)  # Eliminar del inventario
-        flash("Libro eliminado 🗑️", "success")  # Mensaje de éxito
+        inventario.eliminar_producto(id_)
+        flash("Libro eliminado 🗑️", "success")
     except Exception as e:
-        flash(str(e), "danger")  # Mostrar errores
+        flash(str(e), "danger")
 
-    return redirect(url_for("index"))  # Volver a la lista de libros
+    return redirect(url_for("inventario_view"))
 
 
 # -----------------------------
 # Ejecutar la aplicación
 # -----------------------------
 if __name__ == "__main__":
-    app.run(debug=True)  # Ejecutar servidor Flask en modo debug
+    app.run(debug=True)
