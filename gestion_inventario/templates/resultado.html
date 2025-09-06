@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>📊 Resultados desde {{ tipo }}</h2>
+
+{% if datos and datos|length > 0 %}
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        {% for key in datos[0].keys() %}
+          <th>{{ key|capitalize }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in datos %}
+      <tr>
+        {% for value in d.values() %}
+          <td>{{ value }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <div class="alert alert-warning text-center">
+    ⚠️ No se encontraron datos en {{ tipo }}.
+  </div>
+{% endif %}
+
+{% endblock %}

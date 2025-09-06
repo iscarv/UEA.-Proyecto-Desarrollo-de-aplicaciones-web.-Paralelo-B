@@ -1,52 +1,51 @@
-{% extends "base.html" %}  
+{% extends "base.html" %}
 
-{% block content %}  
+{% block content %}
 
-<!-- Título de la página -->
-<h2>➕ Añadir libro</h2>  
+<h2>{% if producto %}✏️ Actualizar libro{% else %}➕ Añadir libro{% endif %}</h2>
 
-<!-- Formulario que envía los datos al servidor con método POST -->
-<form method="post">  
+<form method="post">
 
-  <!-- Campo numérico obligatorio para el ID del libro -->
-  <div class="mb-3">  
-    <label>ID</label>  
-    <input class="form-control" name="id" type="number" required>  
+  <!-- ID: solo editable si es nuevo, si es edición lo mostramos oculto -->
+  {% if producto %}
+    <input type="hidden" name="id" value="{{ producto.id }}">
+  {% else %}
+    <div class="mb-3">
+      <label>ID</label>
+      <input class="form-control" name="id" type="number" required>
+    </div>
+  {% endif %}
+
+  <div class="mb-3">
+    <label>Título</label>
+    <input class="form-control" name="titulo" required value="{{ producto.titulo if producto else '' }}">
   </div>
 
-  <!-- Campo de texto obligatorio para el título del libro -->
-  <div class="mb-3">  
-    <label>Título</label>  
-    <input class="form-control" name="titulo" required>  
+  <div class="mb-3">
+    <label>Autor</label>
+    <input class="form-control" name="autor" required value="{{ producto.autor if producto else '' }}">
   </div>
 
-  <!-- Campo de texto obligatorio para el autor del libro -->
-  <div class="mb-3">  
-    <label>Autor</label>  
-    <input class="form-control" name="autor" required>  
+  <div class="mb-3">
+    <label>Categoría</label>
+    <input class="form-control" name="categoria" required value="{{ producto.categoria if producto else '' }}">
   </div>
 
-  <!-- Campo de texto obligatorio para la categoría (ej: novela, poesía, ensayo) -->
-  <div class="mb-3">  
-    <label>Categoría</label>  
-    <input class="form-control" name="categoria" required>  
+  <div class="mb-3">
+    <label>Cantidad</label>
+    <input class="form-control" name="cantidad" type="number" required value="{{ producto.cantidad if producto else '' }}">
   </div>
 
-  <!-- Campo numérico obligatorio para la cantidad disponible en inventario -->
-  <div class="mb-3">  
-    <label>Cantidad</label>  
-    <input class="form-control" name="cantidad" type="number" required>  
+  <div class="mb-3">
+    <label>Precio</label>
+    <input class="form-control" name="precio" type="number" step="0.01" required value="{{ producto.precio if producto else '' }}">
   </div>
 
-  <!-- Campo numérico obligatorio para el precio (dos decimales, ej: 10.50) -->
-  <div class="mb-3">  
-    <label>Precio</label>  
-    <input class="form-control" name="precio" type="number" step="0.01" required>  
-  </div>
-
-  <!-- Botón para guardar el libro -->
-  <button class="btn btn-success" type="submit">Guardar</button>  
+  <button class="btn btn-success" type="submit">
+    {% if producto %}Actualizar{% else %}Guardar{% endif %}
+  </button>
 
 </form>
 
 {% endblock %}
+

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>✍️ Registrar usuario</h2>
+
+<form method="post">
+  <div class="mb-3">
+    <label>Nombre:</label>
+    <input type="text" class="form-control" name="nombre" required>
+  </div>
+  <div class="mb-3">
+    <label>Correo:</label>
+    <input type="email" class="form-control" name="correo" required>
+  </div>
+
+  <!-- Botones para guardar en diferentes formatos -->
+  <button formaction="{{ url_for('guardar_sqlite_usuario') }}" class="btn btn-success">Guardar en SQLite</button>
+  <button formaction="{{ url_for('guardar_txt') }}" class="btn btn-secondary">Guardar en TXT</button>
+  <button formaction="{{ url_for('guardar_json') }}" class="btn btn-secondary">Guardar en JSON</button>
+  <button formaction="{{ url_for('guardar_csv') }}" class="btn btn-secondary">Guardar en CSV</button>
+</form>
+
+{% endblock %}
+
