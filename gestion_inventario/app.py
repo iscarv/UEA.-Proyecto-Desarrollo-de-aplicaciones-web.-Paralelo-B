@@ -2,15 +2,15 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3, json, csv
 from pathlib import Path
 
-# -----------------------------
+
 # Configuración de la aplicación
-# -----------------------------
+
 app = Flask(__name__)
 app.secret_key = "supersecreto"
 
-# -----------------------------
+
 # Directorios y archivos
-# -----------------------------
+
 DATA_DIR = Path("datos")
 DB_DIR = Path("database")
 DATA_DIR.mkdir(exist_ok=True)
@@ -22,17 +22,17 @@ CSV_FILE = DATA_DIR / "datos.csv"
 USUARIOS_DB = DB_DIR / "usuarios.db"
 INVENTARIO_DB = DB_DIR / "inventario.sqlite3"  # base de inventario
 
-# -----------------------------
+
 # Función de conexión SQLite
-# -----------------------------
+
 def get_db_connection(db_file):
     conn = sqlite3.connect(db_file)
     conn.row_factory = sqlite3.Row
     return conn
 
-# -----------------------------
+
 # Inicializar tabla usuarios
-# -----------------------------
+
 def init_usuarios_db():
     conn = get_db_connection(USUARIOS_DB)
     conn.execute("""
@@ -47,9 +47,9 @@ def init_usuarios_db():
 
 init_usuarios_db()
 
-# -----------------------------
+
 # Rutas Home y About
-# -----------------------------
+
 @app.route("/")
 def home():
     return render_template("home.html")
@@ -58,9 +58,9 @@ def home():
 def about():
     return render_template("about.html")
 
-# -----------------------------
+
 # Inventario
-# -----------------------------
+
 @app.route("/inventario")
 def inventario_view():
     conn = get_db_connection(INVENTARIO_DB)
@@ -139,9 +139,9 @@ def search():
     conn.close()
     return render_template("index.html", productos=productos)
 
-# -----------------------------
+
 # Usuarios (persistencia múltiple)
-# -----------------------------
+
 @app.route("/usuarios")
 def usuarios_view():
     conn = get_db_connection(USUARIOS_DB)
@@ -235,9 +235,9 @@ def guardar_sqlite_usuario():
     flash("Datos guardados en SQLite ✅", "success")
     return redirect(url_for("formulario"))
 
-# -----------------------------
+
 # Ejecutar la aplicación
-# -----------------------------
+
 if __name__ == "__main__":
     app.run(debug=True)
 
