@@ -1,16 +1,26 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3, json, csv
 from pathlib import Path
+from conexion.conexion import get_mysql_connection  # conexión a MySQL
 
-
+# -----------------------------
 # Configuración de la aplicación
-
+# -----------------------------
 app = Flask(__name__)
 app.secret_key = "supersecreto"
 
+# Configuración MySQL como diccionario
+MYSQL_CONFIG = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': '12345678',       
+    'database': 'desarrollo_web', 
+    'port': 3308                  
+}
 
+# -----------------------------
 # Directorios y archivos
-
+# -----------------------------
 DATA_DIR = Path("datos")
 DB_DIR = Path("database")
 DATA_DIR.mkdir(exist_ok=True)
@@ -20,19 +30,17 @@ TXT_FILE = DATA_DIR / "datos.txt"
 JSON_FILE = DATA_DIR / "datos.json"
 CSV_FILE = DATA_DIR / "datos.csv"
 USUARIOS_DB = DB_DIR / "usuarios.db"
-INVENTARIO_DB = DB_DIR / "inventario.sqlite3"  # base de inventario
+INVENTARIO_DB = DB_DIR / "inventario.sqlite3"  # base de inventario SQLite
 
-
-# Función de conexión SQLite
-
+# -----------------------------
+# Conexión SQLite
+# -----------------------------
 def get_db_connection(db_file):
     conn = sqlite3.connect(db_file)
     conn.row_factory = sqlite3.Row
     return conn
 
-
-# Inicializar tabla usuarios
-
+# Inicializar tabla usuarios en SQLite
 def init_usuarios_db():
     conn = get_db_connection(USUARIOS_DB)
     conn.execute("""
@@ -47,9 +55,9 @@ def init_usuarios_db():
 
 init_usuarios_db()
 
-
+# -----------------------------
 # Rutas Home y About
-
+# -----------------------------
 @app.route("/")
 def home():
     return render_template("home.html")
@@ -58,9 +66,9 @@ def home():
 def about():
     return render_template("about.html")
 
-
-# Inventario
-
+# -----------------------------
+# Inventario (SQLite)
+# -----------------------------
 @app.route("/inventario")
 def inventario_view():
     conn = get_db_connection(INVENTARIO_DB)
@@ -68,7 +76,6 @@ def inventario_view():
     conn.close()
     return render_template("index.html", productos=productos)
 
-# Añadir producto
 @app.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "POST":
@@ -88,11 +95,8 @@ def add():
         conn.close()
         flash("Producto agregado correctamente ✅", "success")
         return redirect(url_for("inventario_view"))
-
-    # Producto=None indica que es un formulario para crear
     return render_template("add.html", producto=None)
 
-# Editar producto
 @app.route("/update/<int:id_>", methods=["GET", "POST"])
 def update(id_):
     conn = get_db_connection(INVENTARIO_DB)
@@ -115,10 +119,8 @@ def update(id_):
         return redirect(url_for("inventario_view"))
 
     conn.close()
-    # Pasamos el producto existente para precargar los campos
     return render_template("add.html", producto=producto)
 
-# Eliminar producto
 @app.route("/delete/<int:id_>")
 def delete(id_):
     conn = get_db_connection(INVENTARIO_DB)
@@ -128,7 +130,6 @@ def delete(id_):
     flash("Producto eliminado ✅", "success")
     return redirect(url_for("inventario_view"))
 
-# Buscar producto
 @app.route("/search")
 def search():
     query = request.args.get("q", "")
@@ -139,17 +140,15 @@ def search():
     conn.close()
     return render_template("index.html", productos=productos)
 
-
-# Usuarios (persistencia múltiple)
-
+# -----------------------------
+# Usuarios (SQLite + Archivos)
+# -----------------------------
 @app.route("/usuarios")
 def usuarios_view():
     conn = get_db_connection(USUARIOS_DB)
     rows = conn.execute("SELECT * FROM usuarios").fetchall()
     conn.close()
-
     datos = [dict(row) for row in rows]
-
     return render_template("resultado.html", datos=datos, tipo="SQLite")
 
 @app.route("/formulario")
@@ -235,9 +234,75 @@ def guardar_sqlite_usuario():
     flash("Datos guardados en SQLite ✅", "success")
     return redirect(url_for("formulario"))
 
+# -----------------------------
+# Rutas MySQL
+# -----------------------------
+@app.route('/test_db')
+def test_db():
+    conn = get_mysql_connection(**MYSQL_CONFIG)
+    cursor = conn.cursor()
+    cursor.execute("SHOW TABLES")
+    tablas = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return str(tablas)
 
+@app.route('/mysql_add')
+def mysql_add():
+    conn = get_mysql_connection(**MYSQL_CONFIG)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO usuarios (nombre, email) VALUES ('Juan', 'juan@example.com')")
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return "Usuario agregado correctamente en MySQL ✅"
+
+@app.route("/mysql_tables")
+def mysql_tables():
+    conn = get_mysql_connection(**MYSQL_CONFIG)
+    cursor = conn.cursor()
+    cursor.execute("SHOW TABLES")
+    tablas = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template("mysql_tables.html", tablas=tablas)
+
+# -----------------------------
+# Mostrar datos MySQL
+# -----------------------------
+@app.route('/ver_usuarios')
+def ver_usuarios():
+    conn = get_mysql_connection(**MYSQL_CONFIG)
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM usuarios")
+    usuarios = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template("mysql_data.html", datos=usuarios, titulo="Usuarios")
+
+@app.route('/ver_productos')
+def ver_productos():
+    conn = get_mysql_connection(**MYSQL_CONFIG)
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM productos")
+    productos = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template("mysql_data.html", datos=productos, titulo="Productos")
+
+@app.route('/ver_pedidos')
+def ver_pedidos():
+    conn = get_mysql_connection(**MYSQL_CONFIG)
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM pedidos")
+    pedidos = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template("mysql_data.html", datos=pedidos, titulo="Pedidos")
+
+# -----------------------------
 # Ejecutar la aplicación
-
+# -----------------------------
 if __name__ == "__main__":
     app.run(debug=True)
 

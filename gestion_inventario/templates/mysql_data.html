@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">📊 {{ titulo }} en MySQL</h2>
+
+  {% if datos %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          {% for key in datos[0].keys() %}
+            <th>{{ key }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for fila in datos %}
+        <tr>
+          {% for value in fila.values() %}
+            <td>{{ value }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <p class="text-center">No hay datos para mostrar</p>
+  {% endif %}
+
+  <div class="text-center mt-4">
+    <a href="{{ url_for('home') }}" class="btn btn-primary">⬅️ Volver al inicio</a>
+  </div>
+</div>
+
+{% endblock %}
