@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5 text-center">
+  <h2>Bienvenido {{ user.nombre }} 🎉</h2>
+  <p>Has accedido a una ruta protegida con Flask-Login ✅</p>
+  <a href="{{ url_for('logout') }}" class="btn btn-danger">Cerrar sesión</a>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 500px;">
+  <h2 class="mb-4 text-center">🔐 Iniciar Sesión</h2>
+
+  <!-- Formulario de Login -->
+  <form method="POST" action="{{ url_for('login') }}">
+    <div class="mb-3">
+      <label for="email" class="form-label">Correo electrónico</label> 
+      <input type="email" id="email" name="email" class="form-control" placeholder="usuario@ejemplo.com" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Contraseña</label>
+      <input type="password" id="password" name="password" class="form-control" placeholder="********" required>
+    </div>
+
+    <!-- Captcha numérico -->
+    <div class="mb-3">
+      <label for="captcha" class="form-label">Ingrese el siguiente código para verificar:</label>
+      <div class="d-flex align-items-center">
+        <span class="badge bg-primary fs-5 me-3">{{ captcha }}</span>
+        <input type="text" id="captcha" name="captcha_input" class="form-control" placeholder="Escriba el número mostrado" required>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">Ingresar</button>
+  </form>
+
+  <!-- Link de registro -->
+  <div class="text-center mt-3">
+    <p>¿No tienes cuenta? 
+      <a href="{{ url_for('register') }}">Regístrate aquí</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+
+
+

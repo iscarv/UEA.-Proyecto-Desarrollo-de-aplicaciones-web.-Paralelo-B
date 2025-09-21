@@ -1,25 +1,25 @@
 {% extends "base.html" %}
-{% block content %}
+{% block title %}Tablas en MySQL{% endblock %}
 
+{% block content %}
 <div class="container mt-5">
   <h2 class="text-center mb-4">📊 Tablas en MySQL</h2>
 
   <div class="table-responsive">
     <table class="table table-bordered table-hover">
-      <thead>
+      <thead class="table-dark">
         <tr>
           <th>Nombre de la Tabla</th>
+          <th>Acción</th>
         </tr>
       </thead>
       <tbody>
-        {% for tabla in tablas %}
+        {% for tabla in tables %}
         <tr>
+          <td>{{ tabla }}</td>
           <td>
-            <a href="{% if tabla[0] == 'usuarios' %}{{ url_for('ver_usuarios') }}
-                     {% elif tabla[0] == 'productos' %}{{ url_for('ver_productos') }}
-                     {% elif tabla[0] == 'pedidos' %}{{ url_for('ver_pedidos') }}
-                     {% else %}#{% endif %}">
-              {{ tabla[0] }}
+            <a href="{{ url_for('ver_tabla', table_name=tabla) }}" class="btn btn-sm btn-primary">
+              Ver contenido
             </a>
           </td>
         </tr>
@@ -29,9 +29,8 @@
   </div>
 
   <div class="text-center mt-4">
-    <a href="{{ url_for('home') }}" class="btn btn-primary">⬅️ Volver al inicio</a>
+    <a href="{{ url_for('home') }}" class="btn btn-secondary">⬅️ Volver al inicio</a>
   </div>
 </div>
-
 {% endblock %}
 

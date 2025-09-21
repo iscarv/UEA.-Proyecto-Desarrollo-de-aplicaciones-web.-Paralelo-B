@@ -1,24 +1,40 @@
 {% extends "base.html" %}
+{% block title %}Registrar Usuario{% endblock %}
+
 {% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+  <h2 class="mb-4">✍️ Registrar usuario</h2>
 
-<h2>✍️ Registrar usuario</h2>
+  <!-- Mensajes flash -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
 
-<form method="post">
-  <div class="mb-3">
-    <label>Nombre:</label>
-    <input type="text" class="form-control" name="nombre" required>
-  </div>
-  <div class="mb-3">
-    <label>Correo:</label>
-    <input type="email" class="form-control" name="correo" required>
-  </div>
+  <form method="post">
+    <div class="mb-3">
+      <label>Nombre:</label>
+      <input type="text" class="form-control" name="nombre" placeholder="Ingrese nombre" required>
+    </div>
+    <div class="mb-3">
+      <label>Correo:</label>
+      <input type="email" class="form-control" name="correo" placeholder="usuario@ejemplo.com" required>
+    </div>
 
-  <!-- Botones para guardar en diferentes formatos -->
-  <button formaction="{{ url_for('guardar_sqlite_usuario') }}" class="btn btn-success">Guardar en SQLite</button>
-  <button formaction="{{ url_for('guardar_txt') }}" class="btn btn-secondary">Guardar en TXT</button>
-  <button formaction="{{ url_for('guardar_json') }}" class="btn btn-secondary">Guardar en JSON</button>
-  <button formaction="{{ url_for('guardar_csv') }}" class="btn btn-secondary">Guardar en CSV</button>
-</form>
-
+    <!-- Botones para guardar en diferentes formatos -->
+    <div class="d-flex flex-wrap gap-2">
+      <button formaction="{{ url_for('guardar_sqlite_usuario') }}" class="btn btn-success">Guardar en SQLite</button>
+      <button formaction="{{ url_for('guardar_txt') }}" class="btn btn-secondary">Guardar en TXT</button>
+      <button formaction="{{ url_for('guardar_json') }}" class="btn btn-secondary">Guardar en JSON</button>
+      <button formaction="{{ url_for('guardar_csv') }}" class="btn btn-secondary">Guardar en CSV</button>
+    </div>
+  </form>
+</div>
 {% endblock %}
 

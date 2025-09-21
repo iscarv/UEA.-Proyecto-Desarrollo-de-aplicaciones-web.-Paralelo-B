@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Librería De la Rosa</title>
+  <title>{% block title %}Librería De la Rosa{% endblock %}</title>
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,7 +11,7 @@
   <!-- CSS personalizado -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
@@ -25,34 +25,49 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
 
-          <!-- Inicio -->
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('home') }}">🏠 Inicio</a>
-          </li>
-
           <!-- Acerca de -->
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('about') }}">ℹ️ Acerca de</a>
           </li>
 
-          <!-- Inventario -->
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('inventario_view') }}">📚 Inventario</a>
-          </li>
+          {% if current_user.is_authenticated %}
+            <!-- Inicio -->
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('home') }}">🏠 Inicio</a>
+            </li>
 
-          <!-- Usuarios con dropdown -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-              👥 Usuarios
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark">
-              <li><a class="dropdown-item" href="{{ url_for('formulario') }}">✍️ Registrar usuario</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('leer_txt') }}">📄 Ver en TXT</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('leer_json') }}">📑 Ver en JSON</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('leer_csv') }}">📊 Ver en CSV</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('usuarios_view') }}">🗄️ Ver en SQLite</a></li>
-            </ul>
-          </li>
+            <!-- Inventario -->
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('inventario_view') }}">📚 Inventario</a>
+            </li>
+
+            <!-- Usuarios con dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                👥 Usuarios
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" href="{{ url_for('formulario') }}">✍️ Registrar usuario</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('leer_txt') }}">📄 Ver en TXT</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('leer_json') }}">📑 Ver en JSON</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('leer_csv') }}">📊 Ver en CSV</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('usuarios_view') }}">🗄️ Ver en SQLite</a></li>
+              </ul>
+            </li>
+
+            <!-- Logout -->
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}">🚪 Cerrar sesión</a>
+            </li>
+          {% else %}
+            <!-- Autenticación -->
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('login') }}">🔑 Iniciar sesión</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('register') }}">📝 Registrarse</a>
+            </li>
+          {% endif %}
 
         </ul>
       </div>
@@ -60,7 +75,7 @@
   </nav>
 
   <!-- Contenido dinámico -->
-  <div class="container">
+  <main class="container my-4">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <div class="mt-2">
@@ -75,11 +90,18 @@
     {% endwith %}
 
     {% block content %}{% endblock %}
-  </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-3 mt-auto">
+    <p>2025 Librería de la Rosa - Todos los derechos reservados</p>
+    </footer>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+
 
 

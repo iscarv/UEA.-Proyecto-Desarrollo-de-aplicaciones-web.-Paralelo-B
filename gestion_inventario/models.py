@@ -1,12 +1,36 @@
 import sqlite3
 from pathlib import Path
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional
+
+# Flask-Login
+from flask_login import UserMixin
+
+
+# Configuración SQLite
 
 DB_PATH = Path("inventario.sqlite3")
 
 
-# Clase Producto adaptada para Librería
+
+# Modelo de Usuario (MySQL / Flask-Login)
+
+class Usuario(UserMixin):
+    """ Modelo de Usuario compatible con Flask-Login."""
+  
+    def __init__(self, id_usuario: int, nombre: str, email: str, password_hash: str):
+        self.id = id_usuario   # Flask-Login espera "id"
+        self.nombre = nombre
+        self.email = email
+        self.password_hash = password_hash
+
+    def __repr__(self) -> str:
+        return f"<Usuario {self.id} - {self.nombre}>"
+
+
+
+# Modelo de Producto (SQLite)
+
 @dataclass
 class Producto:
     """
@@ -35,40 +59,13 @@ class Producto:
         if self.precio < 0:
             raise ValueError("El precio no puede ser negativo.")
 
-    # --- Métodos setters ---
-    def set_titulo(self, nuevo_titulo: str) -> None:
-        nuevo = nuevo_titulo.strip()
-        if not nuevo:
-            raise ValueError("El título no puede estar vacío.")
-        self.titulo = nuevo
-
-    def set_autor(self, nuevo_autor: str) -> None:
-        nuevo = nuevo_autor.strip()
-        if not nuevo:
-            raise ValueError("El autor no puede estar vacío.")
-        self.autor = nuevo
-
-    def set_categoria(self, nueva_categoria: str) -> None:
-        nuevo = nueva_categoria.strip()
-        if not nuevo:
-            raise ValueError("La categoría no puede estar vacía.")
-        self.categoria = nuevo
-
-    def set_cantidad(self, nueva_cantidad: int) -> None:
-        if nueva_cantidad < 0:
-            raise ValueError("La cantidad no puede ser negativa.")
-        self.cantidad = nueva_cantidad
-
-    def set_precio(self, nuevo_precio: float) -> None:
-        if nuevo_precio < 0:
-            raise ValueError("El precio no puede ser negativo.")
-        self.precio = nuevo_precio
-
     def to_tuple(self) -> tuple:
         return (self.id, self.titulo, self.autor, self.categoria, self.cantidad, self.precio)
 
 
-# Repositorio SQLite con campo categoría
+
+# Repositorio de Productos (SQLite)
+
 class ProductoRepository:
     """
     Gestiona la persistencia de los libros en SQLite.
@@ -170,11 +167,12 @@ class ProductoRepository:
             ]
 
 
+
 # Inventario en memoria
+
 class Inventario:
     """
     Mantiene los productos en memoria para operaciones rápidas.
-    Ahora la búsqueda por nombre se delega al repositorio.
     """
 
     def __init__(self, repo: ProductoRepository) -> None:

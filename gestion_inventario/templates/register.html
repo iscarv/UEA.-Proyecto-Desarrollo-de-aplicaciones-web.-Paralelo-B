@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Registrarse{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 500px;">
+  <h2 class="mb-4 text-center">📝 Registrarse</h2>
+
+  <!-- Formulario de Registro -->
+  <form method="POST" action="{{ url_for('register') }}">
+    <!-- Nombre completo -->
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre completo</label>
+      <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre Apellido" required>
+    </div>
+
+    <!-- Correo electrónico -->
+    <div class="mb-3">
+      <label for="email" class="form-label">Correo electrónico</label>
+      <input type="email" id="email" name="email" class="form-control" placeholder="usuario@ejemplo.com" required>
+    </div>
+
+    <!-- Contraseña -->
+    <div class="mb-3">
+      <label for="password" class="form-label">Contraseña</label>
+      <input type="password" id="password" name="password" class="form-control" placeholder="********" required>
+    </div>
+
+    <!-- Confirmar contraseña -->
+    <div class="mb-3">
+      <label for="confirm_password" class="form-label">Confirmar contraseña</label>
+      <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="********" required>
+    </div>
+
+    <!-- Captcha numérico -->
+    <div class="mb-3">
+      <label for="captcha" class="form-label">Ingrese el siguiente código para verificar:</label>
+      <div class="d-flex align-items-center">
+        <span class="badge bg-primary fs-5 me-3">{{ captcha }}</span>
+        <input type="text" id="captcha" name="captcha_input" class="form-control" placeholder="Escriba el número mostrado" required>
+      </div>
+    </div>
+
+    <!-- Botón de registro -->
+    <button type="submit" class="btn btn-success w-100">Registrarse</button>
+  </form>
+
+  <!-- Link de login -->
+  <div class="text-center mt-3">
+    <p>¿Ya tienes cuenta? 
+      <a href="{{ url_for('login') }}">Inicia sesión aquí</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
+
