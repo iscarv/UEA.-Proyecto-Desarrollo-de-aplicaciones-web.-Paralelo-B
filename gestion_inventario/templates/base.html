@@ -29,48 +29,47 @@
             <a class="nav-link" href="{{ url_for('about') }}">ℹ️ Acerca de</a>
           </li>
 
-          <!-- Inicio -->
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('home') }}">🏠 Inicio</a>
-          </li>
+          {% if current_user.is_authenticated %}
+            <!-- Inicio -->
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('home') }}">🏠 Inicio</a>
+            </li>
 
-          <!-- Inventario -->
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('inventario_view') }}">📦 Inventario</a>
-          </li>
+            <!-- Inventario -->
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('inventario_view') }}">📦 Inventario</a>
+            </li>
 
-          <!-- Pedidos -->
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('pedidos_view') }}">🛒 Pedidos</a>
-          </li>
+            <!-- Pedidos -->
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('pedidos_view') }}">🛒 Pedidos</a>
+            </li>
 
-          <!-- Usuarios -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-bs-toggle="dropdown">
-              👥 Usuarios
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="usuariosDropdown">
-              <li><a class="dropdown-item" href="{{ url_for('usuarios_export', formato='txt') }}">📄 Ver en TXT</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('usuarios_export', formato='json') }}">🗂️ Ver en JSON</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('usuarios_export', formato='csv') }}">📊 Ver en CSV</a></li>
-            </ul>
-          </li>
-
+            <!-- Usuarios -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-bs-toggle="dropdown">
+                👥 Usuarios
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="usuariosDropdown">
+                <li><a class="dropdown-item" href="{{ url_for('usuarios_export', formato='txt') }}">📄 Ver en TXT</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('usuarios_export', formato='json') }}">🗂️ Ver en JSON</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('usuarios_export', formato='csv') }}">📊 Ver en CSV</a></li>
+              </ul>
+            </li>
+          {% endif %}
         </ul>
 
-        <!-- Botón de cierre de sesión si el usuario está logueado -->
-        {% if current_user.is_authenticated %}
+        <!-- Botones de sesión -->
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('logout') }}">🚪 Salir</a>
-          </li>
+          {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}">🚪 Cerrar sesión</a>
+            </li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">🔑 Iniciar sesión</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">📝 Registrarse</a></li>
+          {% endif %}
         </ul>
-        {% else %}
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">🔑 Iniciar sesión</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">📝 Registrarse</a></li>
-        </ul>
-        {% endif %}
       </div>
     </div>
   </nav>
@@ -100,6 +99,3 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-
-
