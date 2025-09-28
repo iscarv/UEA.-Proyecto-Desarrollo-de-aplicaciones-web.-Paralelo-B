@@ -103,3 +103,15 @@ UPDATE usuarios
 SET password = 'scrypt:32768:8:1$y5ptKnDBKGn02d7H$46c241247067fbfb6039ffa9f945cb67248624a1aef61ac665d654aae72ac0040803bdd42eb472b21802c3b7b7442dee0c00d72d1ef61c65f08b84ef37f4ea9f'
 WHERE id_usuario = 4;
 
+
+#Creación de tabla productos
+CREATE TABLE productos (
+    id_producto INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    autor VARCHAR(255) NOT NULL,
+    categoria VARCHAR(100) NOT NULL,
+    cantidad INT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL
+    portada VARCHAR(255)
+);
+

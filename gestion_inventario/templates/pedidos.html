@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Pedidos{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">🛒 Pedidos</h2>
+
+    <!-- Buscador y botones -->
+    <form method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="busqueda" class="form-control rounded-start" placeholder="Buscar por cliente o producto" value="{{ request.args.get('busqueda', '') }}">
+            <button type="submit" class="btn btn-primary ms-2 rounded">🔍 Buscar</button>
+            <a href="{{ url_for('pedidos_view') }}" class="btn btn-info ms-2 rounded">Limpiar</a>
+            <a href="{{ url_for('crear_pedido') }}" class="btn btn-success ms-2 rounded">➕ Agregar Pedido</a>
+        </div>
+    </form>
+
+    <!-- Tabla de pedidos -->
+    <table class="table table-bordered table-striped shadow" style="color: black;">
+        <thead style="background-color: #f8f9fa;">
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in pedidos %}
+            <tr>
+                <td>{{ pedido.id_pedido }}</td>
+                <td>{{ pedido.cliente }}</td>
+                <td>{{ pedido.producto }}</td>
+                <td>{{ pedido.cantidad }}</td>
+                <td>{{ pedido.fecha }}</td>
+                <td>
+                    <a href="{{ url_for('editar_pedido', id=pedido.id_pedido) }}" class="btn btn-warning btn-sm rounded">✏️Editar</a>
+                    <form method="post" action="{{ url_for('eliminar_pedido', id=pedido.id_pedido) }}" style="display:inline-block" onsubmit="return confirm('¿Eliminar pedido?');">
+                        <button type="submit" class="btn btn-danger btn-sm rounded">🗑️Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">No se encontraron pedidos</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Botones de descarga -->
+    <div class="mt-3">
+        <a href="{{ url_for('descargar_pedidos', formato='txt') }}" class="btn btn-success me-2 rounded">⬇️ Descargar TXT</a>
+        <a href="{{ url_for('descargar_pedidos', formato='json') }}" class="btn btn-success me-2 rounded">⬇️ Descargar JSON</a>
+        <a href="{{ url_for('descargar_pedidos', formato='csv') }}" class="btn btn-success me-2 rounded">⬇️ Descargar CSV</a>
+        <a href="{{ url_for('home') }}" class="btn btn-danger rounded">🔙 Volver</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Inventario{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>📚 Inventario de libros</h2>
+
+    <!-- Formulario de búsqueda y botones -->
+    <form method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="busqueda" class="form-control rounded-start" placeholder="Buscar por título, autor o categoría" value="{{ request.args.get('busqueda', '') }}">
+            <button type="submit" class="btn btn-primary ms-2 rounded">🔍 Buscar</button>
+            <a href="{{ url_for('inventario_view') }}" class="btn btn-info ms-2 rounded">Limpiar</a>
+            <a href="{{ url_for('crear_producto') }}" class="btn btn-success ms-2 rounded">➕ Agregar Libro</a>
+        </div>
+    </form>
+
+    <!-- Estilo para encabezados y bordes grises -->
+    <style>
+        th {
+            color: black !important;
+            border: 1px solid #ccc !important;
+        }
+        td {
+            border: 1px solid #ccc !important;
+        }
+        table {
+            border-collapse: collapse;
+        }
+    </style>
+
+    <!-- Tabla de productos -->
+    <table class="table table-striped shadow">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Categoría</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Portada</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if productos %}
+                {% for producto in productos %}
+                <tr>
+                    <td>{{ producto.id_producto }}</td>
+                    <td>{{ producto.titulo }}</td>
+                    <td>{{ producto.autor }}</td>
+                    <td>{{ producto.categoria }}</td>
+                    <td>{{ producto.cantidad }}</td>
+                    <td>${{ "%.2f"|format(producto.precio) }}</td>
+                    <td>
+                        {% if producto.portada %}
+                            <img src="{{ url_for('static', filename='portadas/' ~ producto.portada) }}" alt="Imagen" width="60">
+                        {% else %}
+                            Sin imagen
+                        {% endif %}
+                    </td>
+                    <td>
+                        <!-- Botón editar -->
+                        <a href="{{ url_for('editar_producto', id=producto.id_producto) }}" class="btn btn-warning btn-sm rounded">✏️Editar</a>
+
+                        <!-- Botón eliminar -->
+                        <form action="{{ url_for('eliminar_producto', id=producto.id_producto) }}" method="POST" style="display:inline-block;">
+                            <button type="submit" class="btn btn-danger btn-sm rounded" onclick="return confirm('¿Seguro que deseas eliminar este producto?')">🗑️Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="8" class="text-center">No se encontraron libros.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

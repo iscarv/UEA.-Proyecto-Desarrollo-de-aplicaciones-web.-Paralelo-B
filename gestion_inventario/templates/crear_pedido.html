@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Crear Pedido</h2>
+    <form method="post">
+        <div class="mb-3">
+            <label for="id_usuario" class="form-label">Cliente</label>
+            <select name="id_usuario" id="id_usuario" class="form-select" required>
+                <option value="">Selecciona un cliente</option>
+                {% for usuario in usuarios %}
+                    <option value="{{ usuario.id_usuario }}">{{ usuario.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_producto" class="form-label">Producto</label>
+            <select name="id_producto" id="id_producto" class="form-select" required>
+                <option value="">Selecciona un producto</option>
+                {% for producto in productos %}
+                    <option value="{{ producto.id_producto }}">{{ producto.titulo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="{{ url_for('pedidos_view') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

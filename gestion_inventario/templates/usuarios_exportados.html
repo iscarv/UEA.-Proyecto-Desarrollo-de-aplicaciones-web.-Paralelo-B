@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Usuarios en {{ formato|upper }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">👥 Usuarios en formato {{ formato|upper }}</h2>
+
+  <table class="table shadow" style="border: 1px solid #ccc; color: black;">
+    <thead style="background-color: #f8f9fa; border-bottom: 2px solid #ccc;">
+      <tr>
+        <th style="border-right: 1px solid #ccc;">ID</th>
+        <th style="border-right: 1px solid #ccc;">Nombre</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in usuarios %}
+        <tr>
+          <td style="border-right: 1px solid #ccc;">{{ u.id }}</td>
+          <td style="border-right: 1px solid #ccc;">{{ u.nombre }}</td>
+          <td>{{ u.email }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="mt-3">
+    <a href="{{ url_for('descargar_usuarios', formato=formato) }}" 
+       class="btn btn-success me-2">
+       ⬇️ Descargar {{ formato|upper }}
+    </a>
+    <a href="{{ url_for('usuarios_view') }}" class="btn btn-danger">
+       🔙 Volver
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+
+
+

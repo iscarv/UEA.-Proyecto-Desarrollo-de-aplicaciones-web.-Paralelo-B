@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Editar Pedido #{{ pedido.id_pedido }}</h2>
+    <form method="post">
+        <div class="mb-3">
+            <label for="id_usuario" class="form-label">Cliente</label>
+            <select name="id_usuario" id="id_usuario" class="form-select" required>
+                {% for usuario in usuarios %}
+                    <option value="{{ usuario.id_usuario }}" {% if usuario.id_usuario == pedido.id_usuario %}selected{% endif %}>{{ usuario.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_producto" class="form-label">Producto</label>
+            <select name="id_producto" id="id_producto" class="form-select" required>
+                {% for producto in productos %}
+                    <option value="{{ producto.id_producto }}" {% if producto.id_producto == pedido.id_producto %}selected{% endif %}>{{ producto.titulo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" value="{{ pedido.cantidad }}" required>
+        </div>
+
+        <button type="submit" class="btn btn-warning">Actualizar</button>
+        <a href="{{ url_for('pedidos_view') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
