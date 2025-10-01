@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-5 text-center">
+
+  <!-- Mensaje de bienvenida dinámico mostrando el nombre del usuario -->
   <h2>Bienvenido {{ user.nombre }} 🎉</h2>
+
+  <!-- Mensaje informativo sobre el acceso a rutas protegidas con Flask-Login -->
   <p>Has accedido a una ruta protegida con Flask-Login ✅</p>
+
+  <!-- Botón para cerrar sesión y redirigir al logout -->
   <a href="{{ url_for('logout') }}" class="btn btn-danger">Cerrar sesión</a>
 </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 import mysql.connector
 import json, csv, os, secrets
+import re 
 from pathlib import Path
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
@@ -110,6 +111,12 @@ def register():
             cursor.close()
             conn.close()
             return redirect(url_for("register"))
+        
+        # Validación del nombre
+        if not re.match(r"^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$", nombre):
+            flash("El nombre solo puede contener letras y espacios ❌", "danger")
+            return redirect(url_for("register"))
+
 
         hashed_password = generate_password_hash(password)
         cursor.execute("INSERT INTO usuarios (nombre, email, password) VALUES (%s, %s, %s)",
@@ -152,7 +159,7 @@ def login():
         if user_data and check_password_hash(user_data["password"], password):
             user = Usuario(user_data["id_usuario"], user_data["nombre"], user_data["email"], user_data["password"])
             login_user(user)
-            flash(f"Bienvenido, {user.nombre} 🎉", "success")
+            flash(f"Bienvenid@, {user.nombre} 🎉", "success")
             return redirect(url_for("home"))
         flash("Correo o contraseña incorrectos ❌", "danger")
         return redirect(url_for("login"))
@@ -246,6 +253,12 @@ def crear_producto():
     if request.method == "POST":
         titulo = request.form["titulo"]
         autor = request.form["autor"]
+        
+        # Validación para que solo acepte letras y espacios
+        if not re.match(r"^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$", autor):
+            flash("El autor solo puede contener letras y espacios ❌", "danger")
+            return redirect(url_for("crear_producto"))
+        
         categoria = request.form["categoria"]
         cantidad = request.form["cantidad"]
         precio = request.form["precio"]

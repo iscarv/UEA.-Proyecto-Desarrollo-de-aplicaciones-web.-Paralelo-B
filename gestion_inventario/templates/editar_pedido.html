@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-4">
+
+    <!-- Título de la página mostrando el número de pedido a editar -->
     <h2>Editar Pedido #{{ pedido.id_pedido }}</h2>
+
+    <!-- Formulario para editar un pedido existente -->
     <form method="post">
+
+        <!-- Lista desplegable para seleccionar el cliente asociado al pedido -->
         <div class="mb-3">
             <label for="id_usuario" class="form-label">Cliente</label>
             <select name="id_usuario" id="id_usuario" class="form-select" required>
@@ -12,6 +18,7 @@
             </select>
         </div>
 
+        <!-- Lista desplegable para seleccionar el producto del pedido -->
         <div class="mb-3">
             <label for="id_producto" class="form-label">Producto</label>
             <select name="id_producto" id="id_producto" class="form-select" required>
@@ -21,11 +28,13 @@
             </select>
         </div>
 
+        <!-- Campo numérico para indicar la cantidad del producto en el pedido -->
         <div class="mb-3">
             <label for="cantidad" class="form-label">Cantidad</label>
             <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" value="{{ pedido.cantidad }}" required>
         </div>
 
+        <!-- Botón para actualizar el pedido y enlace para cancelar -->
         <button type="submit" class="btn btn-warning">Actualizar</button>
         <a href="{{ url_for('pedidos_view') }}" class="btn btn-secondary">Cancelar</a>
     </form>

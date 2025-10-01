@@ -1,32 +1,63 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-4">
+
+    <!-- Título de la página para añadir un nuevo libro -->
     <h2>➕Añadir Libro </h2>
+
+    <!-- Formulario para añadir un libro. 
+         method="POST" porque enviamos datos al servidor.
+         enctype="multipart/form-data" porque permite subir archivos (portada). -->
     <form method="POST" enctype="multipart/form-data">
+
+        <!-- Campo para ingresar el título del libro -->
         <div class="mb-3">
             <label for="titulo" class="form-label">Título</label>
             <input type="text" class="form-control" name="titulo" required>
         </div>
+
+        <!-- Campo para ingresar el autor.
+             Usa pattern para que solo se permitan letras y espacios. -->
         <div class="mb-3">
             <label for="autor" class="form-label">Autor</label>
-            <input type="text" class="form-control" name="autor" required>
+            <input type="text" class="form-control" name="autor" 
+                   pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" 
+                   title="Solo se permiten letras y espacios" required>
         </div>
+
+        <!-- Lista desplegable para seleccionar la categoría del libro -->
         <div class="mb-3">
             <label for="categoria" class="form-label">Categoría</label>
-            <input type="text" class="form-control" name="categoria">
+            <select class="form-control" name="categoria" required>
+                <option value="">-- Selecciona una categoría --</option>
+                <option value="Ficción Histórica">Ficción Histórica</option>
+                <option value="Novela">Novela</option>
+                <option value="Ficción de Aventuras">Ficción de Aventuras</option>
+                <option value="Literatura Fantástica">Literatura Fantástica</option>
+                <option value="Romántica">Romántica</option>
+                <option value="Ciencia Ficción">Ciencia Ficción</option>
+            </select>
         </div>
+
+        <!-- Campo para indicar la cantidad disponible -->
         <div class="mb-3">
             <label for="cantidad" class="form-label">Cantidad</label>
             <input type="number" class="form-control" name="cantidad" min="0" required>
         </div>
+
+        <!-- Campo para indicar el precio del libro -->
         <div class="mb-3">
             <label for="precio" class="form-label">Precio</label>
             <input type="number" class="form-control" name="precio" step="0.01" min="0" required>
         </div>
+
+        <!-- Campo para subir la imagen de la portada del libro -->
         <div class="mb-3">
             <label for="portada" class="form-label">Portada</label>
             <input type="file" class="form-control" name="portada" accept="image/*">
         </div>
+
+        <!-- Botón para guardar el libro y enlace para cancelar -->
         <button type="submit" class="btn btn-success">Guardar</button>
         <a href="{{ url_for('inventario_view') }}" class="btn btn-secondary">Cancelar</a>
     </form>

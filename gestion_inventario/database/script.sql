@@ -3,17 +3,32 @@
 -- -----------------------------
 -- Crear tabla usuarios
 -- -----------------------------
-CREATE TABLE usuarios (
+CREATE TABLE IF NOT EXISTS usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NOT NULL
+    email VARCHAR(150) NOT NULL,
+    password TEXT NOT NULL
+);
+
+
+-- -----------------------------
+-- Crear tabla productos
+-- -----------------------------
+CREATE TABLE IF NOT EXISTS productos (
+    id_producto INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    autor VARCHAR(255) NOT NULL,
+    categoria VARCHAR(100) NOT NULL,
+    cantidad INT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
+    portada VARCHAR(255)
 );
 
 
 -- -----------------------------
 -- Crear tabla pedidos
 -- -----------------------------
-CREATE TABLE pedidos (
+CREATE TABLE IF NOT EXISTS pedidos (
     id_pedido INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     id_producto INT NOT NULL,
@@ -29,22 +44,8 @@ CREATE TABLE pedidos (
 INSERT INTO usuarios (nombre, email) VALUES
 ('Juan Pérez', 'juan@example.com'),
 ('María López', 'maria@example.com'),
-('Carlos Sánchez', 'carlos@example.com');
-
-
--- -----------------------------
--- Insertar datos en pedidos
--- -----------------------------
-INSERT INTO pedidos (id_usuario, id_producto, cantidad, fecha_pedido)
-VALUES
-(1, 1, 1, '2025-09-11'),  -- Juan pide "Los Miserables"
-(2, 2, 2, '2025-09-11');  -- María pide "Guerra y Paz"
-
-- -----------------------------
---Modificar la tabla usuarios para soportar contraseñas encriptadas:
-- -----------------------------
-ALTER TABLE usuarios ADD COLUMN password TEXT NOT NULL;
-
+('Carlos Sánchez', 'carlos@example.com'),
+('Rosa Castillo', 'rosa@example.com');
 
 -- =============================
 --Actualizar contraseñas en usuarios existentes con contraseñas encriptadas
@@ -72,22 +73,18 @@ WHERE id_usuario = 4;
 
 
 -- -----------------------------
--- Crear tabla productos
--- -----------------------------
-CREATE TABLE productos (
-    id_producto INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(255) NOT NULL,
-    autor VARCHAR(255) NOT NULL,
-    categoria VARCHAR(100) NOT NULL,
-    cantidad INT NOT NULL,
-    precio DECIMAL(10,2) NOT NULL
-    portada VARCHAR(255)
-);
-
--- -----------------------------
 -- Insertar datos en productos
 -- -----------------------------
 INSERT INTO productos (titulo, autor, categoria, cantidad, precio, portada)
 VALUES 
 ('Los Miserables', 'Victor Hugo', 'Ficción Histórica', 13, 19.99, NULL),
 ('Guerra y Paz', 'León Tolstói', 'Novela', 20, 22.00, NULL);
+
+
+-- -----------------------------
+-- Insertar datos en pedidos
+-- -----------------------------
+INSERT INTO pedidos (id_usuario, id_producto, cantidad, fecha_pedido)
+VALUES
+(1, 1, 1, '2025-09-11'),  -- Juan pide "Los Miserables"
+(2, 2, 2, '2025-09-11');  -- María pide "Guerra y Paz"

@@ -1,39 +1,68 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-4">
-    <h2>Editar Producto ✍️</h2>
+
+    <!-- Título principal para la edición de libros -->
+    <h2>Editar Libro ✍️</h2>
+
+    <!-- Formulario para editar un libro existente -->
     <form method="POST" enctype="multipart/form-data">
+
+        <!-- Campo para editar el título del libro -->
         <div class="mb-3">
             <label for="titulo" class="form-label">Título</label>
             <input type="text" class="form-control" name="titulo" value="{{ producto.titulo }}" required>
         </div>
+
+        <!-- Campo para editar el autor del libro -->
         <div class="mb-3">
             <label for="autor" class="form-label">Autor</label>
             <input type="text" class="form-control" name="autor" value="{{ producto.autor }}" required>
         </div>
+
+        <!-- Menú desplegable para seleccionar la categoría del libro -->
         <div class="mb-3">
             <label for="categoria" class="form-label">Categoría</label>
-            <input type="text" class="form-control" name="categoria" value="{{ producto.categoria }}">
+            <select class="form-control" name="categoria" required>
+                <option value="">-- Selecciona una categoría --</option>
+                <option value="Ficción Histórica" {% if producto.categoria == "Ficción Histórica" %}selected{% endif %}>Ficción Histórica</option>
+                <option value="Novela" {% if producto.categoria == "Novela" %}selected{% endif %}>Novela</option>
+                <option value="Ficción de Aventuras" {% if producto.categoria == "Ficción de Aventuras" %}selected{% endif %}>Ficción de Aventuras</option>
+                <option value="Literatura Fantástica" {% if producto.categoria == "Literatura Fantástica" %}selected{% endif %}>Literatura Fantástica</option>
+                <option value="Romántica" {% if producto.categoria == "Romántica" %}selected{% endif %}>Romántica</option>
+                <option value="Ciencia Ficción" {% if producto.categoria == "Ciencia Ficción" %}selected{% endif %}>Ciencia Ficción</option>
+            </select>
         </div>
+
+        <!-- Campo para editar la cantidad disponible del libro -->
         <div class="mb-3">
             <label for="cantidad" class="form-label">Cantidad</label>
             <input type="number" class="form-control" name="cantidad" value="{{ producto.cantidad }}" min="0" required>
         </div>
+
+        <!-- Campo para editar el precio del libro -->
         <div class="mb-3">
             <label for="precio" class="form-label">Precio</label>
             <input type="number" class="form-control" name="precio" value="{{ producto.precio }}" step="0.01" min="0" required>
         </div>
+
+        <!-- Campo para mostrar la portada actual y subir una nueva -->
         <div class="mb-3">
             <label for="portada" class="form-label">Portada</label>
             {% if producto.portada %}
+
+                <!-- Vista previa de la portada actual -->
                 <div class="mb-2">
                     <img src="{{ url_for('static', filename='portadas/' ~ producto.portada) }}" alt="Portada" width="100">
                 </div>
             {% endif %}
             <input type="file" class="form-control" name="portada" accept="image/*">
         </div>
+
+        <!-- Botón para actualizar los cambios y opción para cancelar -->
         <button type="submit" class="btn btn-warning">Actualizar</button>
         <a href="{{ url_for('inventario_view') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 {% endblock %}
+

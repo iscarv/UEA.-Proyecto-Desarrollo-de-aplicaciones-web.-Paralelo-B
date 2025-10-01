@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-4">
+    <!-- Título de la página -->
     <h2>Crear Pedido</h2>
+
+    <!-- Formulario para crear pedido, los datos se envían por POST -->
     <form method="post">
+        
+        <!-- Campo para seleccionar el cliente -->
         <div class="mb-3">
             <label for="id_usuario" class="form-label">Cliente</label>
             <select name="id_usuario" id="id_usuario" class="form-select" required>
@@ -13,6 +18,7 @@
             </select>
         </div>
 
+        <!-- Campo para seleccionar el producto -->
         <div class="mb-3">
             <label for="id_producto" class="form-label">Producto</label>
             <select name="id_producto" id="id_producto" class="form-select" required>
@@ -23,12 +29,16 @@
             </select>
         </div>
 
+        <!-- Campo para ingresar la cantidad -->
         <div class="mb-3">
             <label for="cantidad" class="form-label">Cantidad</label>
             <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" required>
         </div>
 
+        <!-- Botón para guardar el pedido -->
         <button type="submit" class="btn btn-success">Guardar</button>
+        
+        <!-- Botón para cancelar y volver a la vista de pedidos -->
         <a href="{{ url_for('pedidos_view') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>

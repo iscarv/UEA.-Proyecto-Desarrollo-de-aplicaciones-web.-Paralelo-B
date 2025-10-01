@@ -2,11 +2,13 @@
 
 {% block content %}
 
+<!-- Si existe un objeto "producto" (estamos editando), muestra "Actualizar libro". 
+     Si no existe (es nuevo), muestra "Añadir libro".-->
+
 <h2>{% if producto %}✏️ Actualizar libro{% else %}➕ Añadir libro{% endif %}</h2>
 
 <form method="post">
 
-  <!-- ID: solo editable si es nuevo, si es edición lo mostramos oculto -->
   {% if producto %}
     <input type="hidden" name="id" value="{{ producto.id }}">
   {% else %}
@@ -18,30 +20,36 @@
 
   <div class="mb-3">
     <label>Título</label>
+    <!-- Campo para ingresar o editar el título. Si estamos editando, se muestra el valor existente -->
     <input class="form-control" name="titulo" required value="{{ producto.titulo if producto else '' }}">
   </div>
 
   <div class="mb-3">
     <label>Autor</label>
+    <!-- Campo para ingresar o editar el autor. Prellenado si estamos editando -->
     <input class="form-control" name="autor" required value="{{ producto.autor if producto else '' }}">
   </div>
 
   <div class="mb-3">
     <label>Categoría</label>
+     <!-- Campo para ingresar o editar la categoría del libro -->
     <input class="form-control" name="categoria" required value="{{ producto.categoria if producto else '' }}">
   </div>
 
   <div class="mb-3">
     <label>Cantidad</label>
+    <!-- Campo numérico para la cantidad de libros disponibles -->
     <input class="form-control" name="cantidad" type="number" required value="{{ producto.cantidad if producto else '' }}">
   </div>
 
   <div class="mb-3">
     <label>Precio</label>
+    <!-- Campo numérico para el precio del libro. step="0.01" permite ingresar decimales -->
     <input class="form-control" name="precio" type="number" step="0.01" required value="{{ producto.precio if producto else '' }}">
   </div>
 
   <button class="btn btn-success" type="submit">
+    <!-- Botón que cambia de texto según si estamos agregando o editando un libro -->
     {% if producto %}Actualizar{% else %}Guardar{% endif %}
   </button>
 
